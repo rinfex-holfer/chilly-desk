@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { GameTypeKey } from "../../../lib/domain/games";
+import { GameType } from "../../../lib/types/games";
 import { PickMe } from "./PickMe";
 
 export const Game: FC<{
-    gameType: GameTypeKey,
+    gameType: GameType,
 }> = ({ gameType }) => {
     switch (gameType) {
         case "pickMe":
