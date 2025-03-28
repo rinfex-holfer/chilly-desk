@@ -3,7 +3,12 @@ import { getDesks } from '@/lib/api/desks';
 import { routes } from '@/lib/routes';
 
 export const DesksList = async () => {
-    const desks = await getDesks();
+    console.log("DesksList render")
+    const desks = await getDesks({
+        next: {
+            revalidate: 10,
+        },
+    });
 
     return (
         <div className="p-4">
@@ -14,7 +19,7 @@ export const DesksList = async () => {
                         <h2 className="text-xl font-semibold">{desk.name}</h2>
                         <p className="text-gray-600 mt-1">{desk.description}</p>
                         <div className="mt-2 text-sm text-gray-500">
-                            Created: {new Date(desk.createdAt).toLocaleDateString()}
+                            Created: {new Date(desk.createdAt).toLocaleDateString()}   
                         </div>
                     </Link>
                 ))}

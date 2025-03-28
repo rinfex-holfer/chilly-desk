@@ -1,27 +1,34 @@
 'use client'
 
-import { useEffect } from 'react'
+import { startTransition, useEffect, useMemo } from 'react'
 import { NotFoundError } from '@/lib/api/errors'
-import { notFound } from 'next/navigation'
-import { routes } from '@/lib/routes'
+import { NextJsError, extractApiError } from '@/lib/api/errors-client'
+import { ApiError } from 'next/dist/server/api-utils'
+import { useRouter } from 'next/navigation'
 
 export default function Error({
     error,
     reset,
 }: {
-    error: Error & { digest?: string }
+    error: NextJsError
     reset: () => void
 }) {
+    const errorParsed = useMemo<NextJsError | ApiError>(() => extractApiError(error) || error, [error])
+    const router = useRouter();
+
     useEffect(() => {
         // TODO reporting
-    }, [error])
+    }, [errorParsed])
 
     const onReset = () => {
-        reset();
+        startTransition(() => {
+            router.refresh();
+            reset();
+        })
     }
 
-    console.dir(error)
-    if (error instanceof NotFoundError) {
+    console.log("errorParsed", errorParsed)
+    if (errorParsed instanceof NotFoundError) {
         return (
             <div>
                 <h2>Desks list is not found :-(</h2>

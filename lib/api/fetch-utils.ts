@@ -1,6 +1,6 @@
 import { AppApiError, NotFoundError } from "./errors";
 
-const apiBase = 'http://0.0.0.0:8000';
+const apiBase = 'http://localhost:8000';
 
 const checkResponseForApiError = (response: Response): AppApiError | undefined => {
     if (response.status === 404) {
